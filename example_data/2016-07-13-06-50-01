@@ -1,0 +1,46 @@
+Attaching to process ID 19739, please wait...
+Debugger attached successfully.
+Server compiler detected.
+JVM version is 25.77-b03
+
+using thread-local object allocation.
+Parallel GC with 4 thread(s)
+
+Heap Configuration:
+   MinHeapFreeRatio         = 0
+   MaxHeapFreeRatio         = 100
+   MaxHeapSize              = 8376025088 (7988.0MB)
+   NewSize                  = 174587904 (166.5MB)
+   MaxNewSize               = 2791833600 (2662.5MB)
+   OldSize                  = 349700096 (333.5MB)
+   NewRatio                 = 2
+   SurvivorRatio            = 8
+   MetaspaceSize            = 21807104 (20.796875MB)
+   CompressedClassSpaceSize = 1073741824 (1024.0MB)
+   MaxMetaspaceSize         = 17592186044415 MB
+   G1HeapRegionSize         = 0 (0.0MB)
+
+Heap Usage:
+PS Young Generation
+Eden Space:
+   capacity = 1980760064 (1889.0MB)
+   used     = 1812797968 (1728.818862915039MB)
+   free     = 167962096 (160.18113708496094MB)
+   91.52032095897506% used
+From Space:
+   capacity = 228589568 (218.0MB)
+   used     = 35776832 (34.11944580078125MB)
+   free     = 192812736 (183.88055419921875MB)
+   15.651121926963876% used
+To Space:
+   capacity = 222822400 (212.5MB)
+   used     = 0 (0.0MB)
+   free     = 222822400 (212.5MB)
+   0.0% used
+PS Old Generation
+   capacity = 783286272 (747.0MB)
+   used     = 667855432 (636.9165725708008MB)
+   free     = 115430840 (110.08342742919922MB)
+   85.26326272701483% used
+
+36010 interned Strings occupying 4444328 bytes.

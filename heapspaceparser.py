@@ -66,12 +66,12 @@ def archive_older_files_than(top_count, folder_path, archive_directory):
     return len(files_to_be_moved)
 
 
-def weekly(folder_name="heap_big"):
-    archive_older_files_than(6 * 24 * 7, "heap_big", "heap_big/archive")
+def weekly(folder_name="example_data"):
+    archive_older_files_than(6 * 24 * 7, folder_name, "archive")
     plot(recursively_process_folder(folder_name, False))
 
 
-def poll_current(warning_threshold=800, files_to_consider=2, folder_name="heap_big"):
+def poll_current(warning_threshold=800, files_to_consider=2, folder_name="example_data"):
     data = recursively_process_folder(folder_name, False)
     import pandas as p
     df = p.DataFrame(data).sort("file", ascending=False)
@@ -87,6 +87,3 @@ def poll_current(warning_threshold=800, files_to_consider=2, folder_name="heap_b
             s = smtplib.SMTP("localhost")
             s.sendmail(me, "pdeboer@mit.edu", msg.as_string())
             print("sent warning")
-
-
-poll_current(warning_threshold=420)
