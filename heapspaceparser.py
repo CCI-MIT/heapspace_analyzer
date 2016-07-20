@@ -68,8 +68,8 @@ def archive_older_files_than(top_count, folder_path, archive_directory):
     return len(files_to_be_moved)
 
 
-def weekly(folder_name="example_data"):
-    archive_older_files_than(6 * 24 * 7, folder_name, "archive")
+def weekly(folder_name="example_data", target_folder="archive"):
+    archive_older_files_than(6 * 24 * 7, folder_name, target_folder)
     plot(recursively_process_folder(folder_name, False))
 
 
