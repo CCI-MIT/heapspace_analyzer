@@ -46,6 +46,8 @@ def prune(n, data_list):
 
 
 def plot(data_list, outfile="heap.png"):
+    import matplotlib
+    matplotlib.use('Agg')
     import pandas as p
     df = p.DataFrame(data_list).sort("file", ascending=False)
     df.index = df["date"]
