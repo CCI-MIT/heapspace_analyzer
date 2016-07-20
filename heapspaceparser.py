@@ -54,7 +54,7 @@ def plot(data_list, outfile="heap.png"):
     df[["capacity", "used", "free"]].plot(title="heap usage")
     from pylab import savefig, ylabel
     ylabel("MB")
-    savefig("%s.png" % outfile, dpi=300)
+    savefig(outfile, dpi=300)
 
 
 def archive_older_files_than(top_count, folder_path, archive_directory):
