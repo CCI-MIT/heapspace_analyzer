@@ -62,11 +62,19 @@ def archive_older_files_than(days, folder_path, archive_directory):
     import pandas as p
     import shutil
     import datetime as DT
+    import os
     today = DT.date.today()
     one_week_ago = today - DT.timedelta(days=days)
 
     def move_files(files):
         for f in files:
+            target_filename = archive_directory + "/" + os.path.basename(f)
+            if os.path.exists(target_filename):
+                print("%s exists, replacing it." % target_filename)
+                try:
+                    os.remove(target_filename)
+                except:
+                    pass
             shutil.move(f, archive_directory)
 
     df = p.DataFrame(data)
