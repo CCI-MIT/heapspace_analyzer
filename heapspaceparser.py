@@ -62,7 +62,7 @@ def archive_older_files_than(days, folder_path, archive_directory):
     import pandas as p
     import shutil
     import datetime as DT
-    today = DT.date.today()
+    today = DT.datetime.today()
     one_week_ago = today - DT.timedelta(days=days)
 
     def move_files(files):
