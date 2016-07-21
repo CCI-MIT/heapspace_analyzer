@@ -106,6 +106,3 @@ def poll_current(warning_threshold=800, files_to_consider=2, folder_name="exampl
             s = smtplib.SMTP("localhost")
             s.sendmail(me, "pdeboer@mit.edu", msg.as_string())
             print("sent warning")
-
-
-weekly("heapMonitor")
