@@ -62,7 +62,7 @@ def archive_older_files_than(days, folder_path, archive_directory):
     import pandas as p
     import shutil
     import datetime as DT
-    today = DT.datetime.today()
+    today = DT.date.today()
     one_week_ago = today - DT.timedelta(days=days)
 
     def move_files(files):
@@ -71,7 +71,8 @@ def archive_older_files_than(days, folder_path, archive_directory):
 
     df = p.DataFrame(data)
 
-    files_with_correct_date = df[df["date"] < one_week_ago]["file"]
+    df["dated"] = [d.date() if d is not None else None for d in df["date"]]
+    files_with_correct_date = df[df["dated"] < one_week_ago]["file"]
     files_with_exceptions = [f["file"] for f in data if "exception" in f]
 
     move_files(files_with_correct_date)
