@@ -41,15 +41,11 @@ def recursively_process_folder(folder_path, prune_errors=True):
     return [c for c in contents if not prune_errors or not "exception" in c]
 
 
-def prune(n, data_list):
-    return [r for index, r in enumerate(data_list) if index < n]
-
-
 def plot(data_list, outfile="heap.png"):
     import matplotlib
     matplotlib.use('Agg')
     import pandas as p
-    df = p.DataFrame(data_list).sort("file", ascending=False)
+    df = p.DataFrame(data_list).sort("file", ascending=False).dropna()
     df.index = df["date"]
     df[["capacity", "used", "free"]].plot(title="heap usage")
     from pylab import savefig, ylabel
@@ -110,3 +106,6 @@ def poll_current(warning_threshold=800, files_to_consider=2, folder_name="exampl
             s = smtplib.SMTP("localhost")
             s.sendmail(me, "pdeboer@mit.edu", msg.as_string())
             print("sent warning")
+
+
+weekly("heapMonitor")
