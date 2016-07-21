@@ -4,7 +4,7 @@ def get_file_contents(path):
     import dateutil.parser
     (target_date_text, target_date) = os.path.basename(path), ""
     try:
-        target_date = dateutil.parser.parse(target_date_text).date()
+        target_date = dateutil.parser.parse(target_date_text)
     except:
         pass
 
