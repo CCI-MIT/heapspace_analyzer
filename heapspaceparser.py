@@ -1,10 +1,16 @@
+def parse_filename_to_datetime(filename):
+    import dateutil.parser
+    exploded = filename.split("-")
+    (months, days) = exploded[:3], exploded[3:6]
+    targetTime = "-".join(months) + " " + ":".join(days)
+    return dateutil.parser.parse("%s" % targetTime)
+
 def get_file_contents(path):
     linecount = 0
     import os
-    import dateutil.parser
     (target_date_text, target_date) = os.path.basename(path), ""
     try:
-        target_date = dateutil.parser.parse(target_date_text)
+        target_date = parse_filename_to_datetime(target_date_text)
     except:
         pass
 
