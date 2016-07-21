@@ -57,20 +57,35 @@ def plot(data_list, outfile="heap.png"):
     savefig(outfile, dpi=300)
 
 
-def archive_older_files_than(top_count, folder_path, archive_directory):
-    data = recursively_process_folder(folder_path)
+def archive_older_files_than(days, folder_path, archive_directory):
+    data = recursively_process_folder(folder_path, prune_errors=False)
     import pandas as p
     import shutil
-    df = p.DataFrame(data).sort("file", ascending=True)
-    files_to_be_moved = df["file"][:len(df) - top_count]
-    for f in files_to_be_moved:
-        shutil.move(f, archive_directory)
-    return len(files_to_be_moved)
+    import datetime as DT
+    today = DT.date.today()
+    one_week_ago = today - DT.timedelta(days=days)
+
+    def move_files(files):
+        for f in files:
+            shutil.move(f, archive_directory)
+
+    df = p.DataFrame(data)
+
+    files_with_correct_date = df[df["date"] < one_week_ago]["file"]
+    files_with_exceptions = [f["file"] for f in data if "exception" in f]
+
+    move_files(files_with_correct_date)
+    move_files(files_with_exceptions)
+
+    return len(files_with_correct_date) + len(files_with_exceptions)
 
 
 def weekly(folder_name="example_data", target_folder="archive"):
-    archive_older_files_than(6 * 24 * 7, folder_name, target_folder)
+    archive_older_files_than(7, folder_name, target_folder)
     plot(recursively_process_folder(folder_name, False))
+
+
+weekly("heapMonitor", "archive")
 
 
 def poll_current(warning_threshold=800, files_to_consider=2, folder_name="example_data"):
