@@ -45,7 +45,7 @@ def plot(data_list, outfile="heap.png"):
     import matplotlib
     matplotlib.use('Agg')
     import pandas as p
-    df = p.DataFrame(data_list).sort("file", ascending=False).dropna()
+    df = p.DataFrame(data_list).sort("file", ascending=False)
     df.index = df["date"]
     df[["capacity", "used", "free"]].plot(title="heap usage")
     from pylab import savefig, ylabel
