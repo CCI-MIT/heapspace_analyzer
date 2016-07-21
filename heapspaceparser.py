@@ -85,9 +85,6 @@ def weekly(folder_name="example_data", target_folder="archive"):
     plot(recursively_process_folder(folder_name, False))
 
 
-weekly("heapMonitor", "archive")
-
-
 def poll_current(warning_threshold=800, files_to_consider=2, folder_name="example_data"):
     data = recursively_process_folder(folder_name, False)
     import pandas as p
