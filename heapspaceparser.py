@@ -5,6 +5,7 @@ def parse_filename_to_datetime(filename):
     targetTime = "-".join(months) + " " + ":".join(days)
     return dateutil.parser.parse("%s" % targetTime)
 
+
 def get_file_contents(path):
     linecount = 0
     import os
@@ -26,12 +27,7 @@ def get_file_contents(path):
         # used     = 234462504 (223.60086822509766MB)
         # free     = 326001368 (310.89913177490234MB)
 
-        old_gen = content.split("PS Old Generation")
-        old_gen_data_rows = old_gen[1].split("\n")
-        old_gen_data_rows_split = [[x.strip().split(" ")[0] for x in r.split("=")] for r in
-                                   old_gen_data_rows]
-        old_gen_data = {r[0]: int(r[1]) / 1024 / 1024 for r in old_gen_data_rows_split if
-                        len(r) == 2}
+        old_gen_data = extract_heap_generation(content, "PS Old Generation")
 
         old_gen_data["file"] = path
         old_gen_data["date"] = target_date
@@ -41,19 +37,30 @@ def get_file_contents(path):
                 "capacity": 0, "used": 0, "free": 0}
 
 
+def extract_heap_generation(content, generation_name, prefix=""):
+    old_gen = content.split(generation_name)
+    old_gen_data_rows = old_gen[1].split("\n")
+    old_gen_data_rows_split = [[x.strip().split(" ")[0] for x in r.split("=")] for r in
+                               old_gen_data_rows[:4]]
+    old_gen_data = {r[0]: int(r[1]) / 1024 / 1024 for r in old_gen_data_rows_split if
+                    len(r) == 2}
+    #return {(prefix + l): r for l, r in old_gen_data}
+    return old_gen_data
+
+
 def recursively_process_folder(folder_path, prune_errors=True):
     from os import listdir
     contents = [get_file_contents(folder_path + "/" + f) for f in listdir(folder_path)]
     return [c for c in contents if not prune_errors or not "exception" in c]
 
 
-def plot(data_list, outfile="heap.png"):
+def plot(data_list, plot_name="heap usage", outfile="heap.png"):
     import matplotlib
     matplotlib.use('Agg')
     import pandas as p
     df = p.DataFrame(data_list).sort("file", ascending=False)
     df.index = df["date"]
-    df[["capacity", "used", "free"]].plot(title="heap usage")
+    df[["capacity", "used", "free"]].plot(title=plot_name)
     from pylab import savefig, ylabel
     ylabel("MB")
     savefig(outfile, dpi=300)
@@ -91,9 +98,9 @@ def archive_older_files_than(days, folder_path, archive_directory):
     return len(files_with_correct_date) + len(files_with_exceptions)
 
 
-def weekly(folder_name="example_data", target_folder="archive"):
-    archive_older_files_than(7, folder_name, target_folder)
-    plot(recursively_process_folder(folder_name, False))
+def weekly(folder_name="example_data", target_folder="archive", plot_name="heap usage", plot_outfile="plot.png"):
+    archive_older_files_than(10, folder_name, target_folder)
+    plot(recursively_process_folder(folder_name, False), plot_name, plot_outfile)
 
 
 def poll_current(warning_threshold=800, files_to_consider=2, folder_name="example_data"):
